@@ -4,37 +4,49 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import kotlin.system.exitProcess
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val navController = findNavController(R.id.nav_host_fragment)
+    companion object {
+        lateinit var navView: BottomNavigationView
+        lateinit var navController: NavController
+        lateinit var backStack: Deque<NavBackStackEntry>
+    }
+
     @SuppressLint("RestrictedApi")
-    val backStack = navController.backStack
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
+        // init
+        navView = nav_view
+        navController = NavHostFragment.findNavController(nav_host_fragment)
+        backStack = navController.backStack
+        println("backStack = ${backStack}")
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        navController.popBackStack()
-        if(backStack.size == 0){
-            exitProcess(0)
-        }
+        println("navController.popBackStack() = ${navController.popBackStack()}")
     }
 }

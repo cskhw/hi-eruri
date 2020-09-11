@@ -1,4 +1,4 @@
-package com.wiserock.template.utils.interfaces
+package com.wiserock.heruri.utils.interfaces
 
 import android.app.Activity
 import android.content.pm.PackageManager

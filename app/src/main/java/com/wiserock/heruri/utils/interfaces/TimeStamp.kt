@@ -1,4 +1,4 @@
-package com.wiserock.template.utils.interfaces
+package com.wiserock.heruri.utils.interfaces
 
 import java.time.LocalDateTime
 import java.time.ZoneId

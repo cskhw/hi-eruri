@@ -1,4 +1,4 @@
-package com.wiserock.template.utils
+package com.wiserock.heruri.utils
 
 import android.content.Context
 import android.content.SharedPreferences

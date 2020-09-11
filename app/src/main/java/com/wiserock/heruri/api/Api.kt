@@ -1,6 +1,11 @@
-package com.wiserock.template.api
+package com.wiserock.heruri.api
 
 import com.google.gson.GsonBuilder
+import com.wiserock.heruri.api.service.Auth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -14,12 +19,11 @@ object Api {
     private var authToken: String? = null
 
     // create service
-
+    lateinit var auth: Auth
     private val signIn get() = authToken != null
     fun update(
         baseUrl: String? = null,
         authToken: String? = null
-
     ) {
         Api.baseUrl = baseUrl ?: Api.baseUrl
         Api.authToken = authToken ?: Api.authToken
@@ -29,19 +33,20 @@ object Api {
         val gsonBuilder = GsonBuilder()
             .setLenient()
 
-        retrofitBuilder.baseUrl(baseUrl!!)
+        retrofitBuilder.baseUrl(Api.baseUrl)
             .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
         retrofit = retrofitBuilder.build()
 
         // register service
+        auth = retrofit.create(Auth::class.java)
     }
 
     init {
         update()
     }
 
-    private class AuthorizationHeaderInterceptor(authToken: String) : Interceptor {
+    private class AuthorizationHeaderInterceptor(private val authToken: String) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val requestBuilder = chain.request().newBuilder()
 

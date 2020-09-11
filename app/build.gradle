@@ -41,6 +41,7 @@ dependencies {
         annotationProcessor "com.sun.xml.bind:jaxb-core:2.3.0.1"
         annotationProcessor "javax.xml.bind:jaxb-api:2.3.1"
     }
+    implementation "org.jsoup:jsoup:1.11.3"
     implementation "androidx.navigation:navigation-fragment:2.3.0"
     implementation "androidx.navigation:navigation-ui:2.3.0"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.0"
