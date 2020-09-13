@@ -1,7 +1,10 @@
 package com.wiserock.heruri
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.wiserock.heruri.api.Api
 import com.wiserock.heruri.api.Value
@@ -11,38 +14,87 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jsoup.Connection
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.webkit.JavascriptInterface as JavascriptInterface
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var username: String
-    lateinit var password: String
+    var username: String = ""
+    var password: String = ""
+    lateinit var source: String
+
+    @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         Api.update(
             Value.BASE_URL
         )
+        val userAgent =
+            "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+        val loginUrl = Value.BASE_URL + "login/index.php"
         setContentView(R.layout.activity_login)
-        activity_login_button.setOnClickListener(setOnClickLoginButtonListener())
+        GlobalScope.launch(Dispatchers.IO) {
+            val loginForm: Connection.Response = Jsoup
+                .connect(loginUrl)
+                .method(Connection.Method.POST)
+                .userAgent(userAgent)
+                .execute()
+
+            val loginDoc: Document = loginForm.parse()
+
+            val formData: HashMap<String, String> = hashMapOf()
+
+            formData["username"] = username
+            formData["password"] = password
+            val homepage: Connection.Response = Jsoup.connect(loginUrl)
+                .data(formData)
+                .method(Connection.Method.POST)
+                .userAgent(userAgent)
+                .execute()
+
+            println("homepage.parse().html() = ${homepage.parse().html()}")
+        }
+
+        val webView = activity_login_webView
+        webView.settings.javaScriptEnabled = true
+        webView.addJavascriptInterface(MyJavascriptInterface(), "Android")
+
+        // 태그 찾기
+        // 값 입력
+        // 보내기
+        webView.webViewClient = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                view?.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('body')[0].innerHTML);")
+            }
+
+        }
+        webView.loadUrl("https://eruri.kangwon.ac.kr")
+
+
+        activity_login_button.setOnClickListener {
+            username = activity_login_username.text.toString()
+            password = activity_login_password.text.toString()
+
+
+        }
     }
 
-    private fun setOnClickLoginButtonListener(): View.OnClickListener? {
-        return View.OnClickListener {
-            username = activity_login_password.text.toString()
-            password = activity_login_username.text.toString()
-            println("username = $username")
-            println("password = $password")
-            Api.auth.signIn(SignIn(username, password)).enqueue(object : Callback<Void> {
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    println("t.message = ${t.message}")
-                }
+    inner class MyJavascriptInterface {
+        @JavascriptInterface
+        fun getHtml(html: String) {
+            source = html
+        }
 
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    MyApp.debugResponse(response)
-                    println("XSRF-TOKEN= ${response.headers().get("XSRF-TOKEN")}")
-                }
-            })
+        @JavascriptInterface
+        fun updateKeyword(keyword: String) {
+
         }
     }
 }
