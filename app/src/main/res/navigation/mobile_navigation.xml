@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.wiserock.heruri.navigation.dashboard.DashboardFragment"
+        android:id="@+id/navigation_course"
+        android:name="com.wiserock.heruri.navigation.course.CourseFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_course" />
 
     <fragment
         android:id="@+id/navigation_notifications"

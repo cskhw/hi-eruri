@@ -2,10 +2,14 @@ package com.wiserock.heruri.utils
 
 import android.app.Application
 import com.wiserock.template.model.user.UserEntity
+import org.jsoup.nodes.Document
 import retrofit2.Response
 
 object MyApp : Application() {
     var user: UserEntity? = null
+    var isSigned: Boolean? = null
+    lateinit var html: Document
+
     fun <T> debugResponse(response: Response<T>) {
         println("\n================Start Response Debug==================")
         println("response.body() = ${response.body()}")
