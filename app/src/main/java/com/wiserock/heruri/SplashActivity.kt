@@ -2,9 +2,6 @@ package com.wiserock.heruri
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.wiserock.heruri.api.Value
 import com.wiserock.heruri.utils.AppPreferenceManager
@@ -35,34 +32,24 @@ class SplashActivity : AppCompatActivity() {
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-
-            val homepage: Connection.Response = Jsoup.connect(loginUrl)
+            MyApp.index = Jsoup.connect(loginUrl)
                 .data(formData)
                 .method(Connection.Method.POST)
                 .userAgent("Android")
                 .execute()
-            val homepageHtml = homepage.parse()
-
+            val homepageHtml = MyApp.index.parse()
             MyApp.html = homepageHtml
+            MyApp.cookies = MyApp.index.cookies()
+
             try {
                 homepageHtml.select("div.main_login_find_idpw").first().text()
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                finish()
             } catch (e: NullPointerException) {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
             }
-
         }
-        GlobalScope.launch(Dispatchers.Main) {
-            Toast.makeText(
-                applicationContext,
-                "아이디 혹은 비밀번호가 잘못되었습니다.",
-                Toast.LENGTH_LONG
-            )
-                .show()
-        }
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }, 1000)
 
     }
 }

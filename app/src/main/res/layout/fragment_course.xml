@@ -18,7 +18,6 @@
             android:id="@+id/fragment_course_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:listData="@{course.courses}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

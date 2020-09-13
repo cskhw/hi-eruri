@@ -2,6 +2,8 @@ package com.wiserock.heruri
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wiserock.heruri.navigation.course.CourseFragment
@@ -19,9 +21,28 @@ class MainActivity : AppCompatActivity() {
         nav_view.selectedItemId = R.id.navigation_home
 
 
+        val ab = supportActionBar
+
+
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_menu, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.app_menu_setting -> {
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
     private fun onNavigationItemSelectedListener(): BottomNavigationView.OnNavigationItemSelectedListener? {
         return BottomNavigationView.OnNavigationItemSelectedListener {
             when (it.itemId) {

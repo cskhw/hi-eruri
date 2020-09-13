@@ -44,31 +44,30 @@ class LoginActivity : AppCompatActivity() {
 
                 formData["username"] = username
                 formData["password"] = password
-                val homepage: Connection.Response = Jsoup.connect(loginUrl)
+                MyApp.index = Jsoup.connect(loginUrl)
                     .data(formData)
                     .method(Connection.Method.POST)
                     .userAgent(userAgent)
                     .execute()
-
-                val homepageHtml = homepage.parse()
-
+                val homepageHtml = MyApp.index.parse()
                 MyApp.html = homepageHtml
+                MyApp.cookies = MyApp.index.cookies()
                 
                 try {
                     homepageHtml.select("div.main_login_find_idpw").first().text()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        Toast.makeText(
+                            applicationContext,
+                            "아이디 혹은 비밀번호가 잘못되었습니다.",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
                 } catch (e: NullPointerException) {
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                }
-                GlobalScope.launch(Dispatchers.Main) {
-                    Toast.makeText(
-                        applicationContext,
-                        "아이디 혹은 비밀번호가 잘못되었습니다.",
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                    finish()
                 }
             }
-            finish()
         }
     }
 }

@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 data class Video(
     var week: Int,
     var name: String,
-    var doen: Boolean
+    var done: Boolean
 ) : Parcelable

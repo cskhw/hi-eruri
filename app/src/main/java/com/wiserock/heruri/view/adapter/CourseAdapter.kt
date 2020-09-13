@@ -3,12 +3,28 @@ package com.wiserock.heruri.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.ItemCourseBinding
 import com.wiserock.heruri.navigation.course.CourseViewModel
+import org.jsoup.nodes.Element
 
-class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
+
+class CourseAdapter : ListAdapter<Element, RecyclerView.ViewHolder>(CourseDiffUtil) {
+    companion object CourseDiffUtil: DiffUtil.ItemCallback<Element>(){
+        override fun areItemsTheSame(oldItem: Element, newItem: Element): Boolean {
+            return oldItem.text() === newItem.text()
+        }
+
+        override fun areContentsTheSame(oldItem: Element, newItem: Element): Boolean {
+            return oldItem == newItem
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemCourseBinding = DataBindingUtil.inflate(
@@ -24,7 +40,7 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ItemCourseViewHolder(private val binding: ItemCourseBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item:) {
+        fun bind(item: Int) {
             binding.executePendingBindings()
 
         }
@@ -36,5 +52,9 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         binding.bind(position)
     }
 
-    override fun getItemCount(): Int = Course
+    override fun getItemCount(): Int{
+        val count = itemCount
+        return count
+    }
+
 }
