@@ -9,7 +9,6 @@ import com.wiserock.heruri.databinding.ItemCourseBinding
 import com.wiserock.heruri.navigation.course.CourseViewModel
 
 class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val courseViewModel = CourseViewModel()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemCourseBinding = DataBindingUtil.inflate(
@@ -24,16 +23,18 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ItemCourseViewHolder(private val binding: ItemCourseBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            binding.pos = position
+
+        fun bind(item:) {
             binding.executePendingBindings()
+
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = holder as ItemCourseViewHolder
+
         binding.bind(position)
     }
 
-    override fun getItemCount(): Int = courseViewModel.courses.size
+    override fun getItemCount(): Int = Course
 }
