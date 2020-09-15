@@ -1,6 +1,7 @@
 package com.wiserock.heruri.utils
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import com.wiserock.template.model.user.UserEntity
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -13,7 +14,7 @@ object MyApp : Application() {
     lateinit var html: Document
     lateinit var index: Connection.Response
     lateinit var cookies: Map<String, String>
-
+    var homeworkIds: MutableLiveData<HashSet<Int>> = MutableLiveData()
     fun getResponseWithUrl(
         url: String,
         method: Connection.Method,

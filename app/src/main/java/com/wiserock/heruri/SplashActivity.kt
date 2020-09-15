@@ -13,6 +13,7 @@ import org.jsoup.Connection
 import org.jsoup.Jsoup
 
 class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val preference = AppPreferenceManager
@@ -50,6 +51,5 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
         }
-
     }
 }

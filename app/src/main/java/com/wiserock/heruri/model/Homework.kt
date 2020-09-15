@@ -5,9 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Homework(
-    var week: Int,
+    var course: String,
     var name: String,
     var done: Boolean,
-    var deadline: String,
-    var score: Int
+    var deadline: String
 ) : Parcelable

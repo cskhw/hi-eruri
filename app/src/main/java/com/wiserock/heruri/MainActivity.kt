@@ -1,6 +1,7 @@
 package com.wiserock.heruri
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,9 +10,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wiserock.heruri.navigation.course.CourseFragment
 import com.wiserock.heruri.navigation.home.HomeFragment
 import com.wiserock.heruri.navigation.notifications.NotificationsFragment
+import com.wiserock.heruri.utils.AppPreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,9 +22,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener())
         nav_view.selectedItemId = R.id.navigation_home
-
-
-        val ab = supportActionBar
 
 
     }
@@ -34,6 +34,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.app_menu_setting -> {
+                true
+            }
+            R.id.app_menu_signOut -> {
+                val preference = AppPreferenceManager
+                preference.setString(this, "username", "")
+                preference.setString(this, "password", "")
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
                 true
             }
             else -> {

@@ -3,26 +3,16 @@ package com.wiserock.heruri.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.ItemCourseBinding
 import com.wiserock.heruri.navigation.course.CourseViewModel
-import org.jsoup.nodes.Element
 
 
-
-
-class CourseAdapter : ListAdapter<Element, RecyclerView.ViewHolder>(CourseDiffUtil) {
-    companion object CourseDiffUtil: DiffUtil.ItemCallback<Element>(){
-        override fun areItemsTheSame(oldItem: Element, newItem: Element): Boolean {
-            return oldItem.text() === newItem.text()
-        }
-
-        override fun areContentsTheSame(oldItem: Element, newItem: Element): Boolean {
-            return oldItem == newItem
-        }
+class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    companion object {
+        var itemSize = 0
+        lateinit var viewModel: CourseViewModel
     }
 
 
@@ -33,28 +23,24 @@ class CourseAdapter : ListAdapter<Element, RecyclerView.ViewHolder>(CourseDiffUt
             parent,
             false
         )
-        binding.course = CourseViewModel()
+        binding.course = viewModel
         return ItemCourseViewHolder(binding)
     }
 
     inner class ItemCourseViewHolder(private val binding: ItemCourseBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Int) {
+        fun bind(position: Int) {
+            binding.pos = position
             binding.executePendingBindings()
-
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = holder as ItemCourseViewHolder
-
         binding.bind(position)
     }
 
-    override fun getItemCount(): Int{
-        val count = itemCount
-        return count
-    }
+    override fun getItemCount(): Int = itemSize
 
 }
