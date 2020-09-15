@@ -3,16 +3,19 @@ package com.wiserock.heruri
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.wiserock.heruri.api.Value
 import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
+import com.wiserock.heruri.utils.interfaces.LoadHomework
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), LoadHomework {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +50,13 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()
             } catch (e: NullPointerException) {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+                withContext(Dispatchers.Main) {
+                    MyApp.loading.observe(this@SplashActivity, Observer {
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
+                    })
+                    loadHomework(this@SplashActivity)
+                }
             }
         }
     }
