@@ -2,6 +2,7 @@ package com.wiserock.heruri.utils
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
 import com.wiserock.template.model.user.UserEntity
 import org.jsoup.Connection
@@ -18,6 +19,7 @@ object MyApp : Application() {
     var loading: MutableLiveData<Boolean> = MutableLiveData(false)
     var homeworkIds: HashSet<Int> = hashSetOf()
     var homeworkArrayList: ArrayList<Homework> = arrayListOf()
+    var course: ArrayList<Course> = arrayListOf()
     fun getResponseWithUrl(
         url: String,
         method: Connection.Method,

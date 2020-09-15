@@ -64,9 +64,12 @@ interface LoadHomework {
                             deadline = deadline!!
                         )
                     )
+
                 }
+
             }
             withContext(Dispatchers.Main) {
+                CourseAdapter.viewModel.homeworkList.value = MyApp.homeworkArrayList
                 MyApp.loading.value = true
             }
         }

@@ -8,7 +8,5 @@ data class Course(
     var id: Int?,
     var name: String,
     var href: String,
-    var professor: String,
-    var homework: ArrayList<Homework>,
-    var videos: ArrayList<Video>
+    var professor: String
 ) : Parcelable

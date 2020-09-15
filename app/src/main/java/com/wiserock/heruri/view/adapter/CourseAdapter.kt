@@ -17,8 +17,6 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         lateinit var viewModel: CourseViewModel
     }
 
-    var checkList: ArrayList<Boolean> = arrayListOf()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemCourseBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -46,10 +44,11 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         binding.bind(position)
         try {
             if (viewModel.homeworkList.value?.get(position)?.done!!) {
-                view.setBackgroundResource(R.color.lightGreen)
+                view.setBackgroundResource(R.color.white)
                 view.item_course_text1.setTextColor(R.color.black)
                 view.item_course_text2.setTextColor(R.color.black)
                 view.item_course_text3.setTextColor(R.color.black)
+                notifyDataSetChanged()
             }
         } catch (e: Exception) {
             println("리스트 초기화 중...")
