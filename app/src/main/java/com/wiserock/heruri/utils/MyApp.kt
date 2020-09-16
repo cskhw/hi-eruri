@@ -4,22 +4,22 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
-import com.wiserock.template.model.user.UserEntity
+import com.wiserock.heruri.model.Notification
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Response
 
 object MyApp : Application() {
-    var user: UserEntity? = null
-    var isSigned: Boolean? = null
     lateinit var html: Document
     lateinit var index: Connection.Response
     lateinit var cookies: Map<String, String>
     var loading: MutableLiveData<Boolean> = MutableLiveData(false)
     var homeworkIds: HashSet<Int> = hashSetOf()
     var homeworkArrayList: ArrayList<Homework> = arrayListOf()
-    var course: ArrayList<Course> = arrayListOf()
+    var courseArrayList: ArrayList<Course> = arrayListOf()
+    var notificationArrayList: ArrayList<Notification> = arrayListOf()
+
     fun getResponseWithUrl(
         url: String,
         method: Connection.Method,

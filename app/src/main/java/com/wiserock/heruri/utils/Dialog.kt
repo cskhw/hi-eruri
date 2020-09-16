@@ -6,14 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
 
-class Dialog(private val context: Context) {
-    private val progressBarId: Int get() = ProgressBar.generateViewId()
+class Dialog(private val context: Context, id: Int) {
 
     private val view: View? =
         LayoutInflater.from(context)
-            .inflate(progressBarId, null)
+            .inflate(id, null)
     private val builder = AlertDialog.Builder(context)
     private val dialog: AlertDialog = builder
         .setCancelable(false)

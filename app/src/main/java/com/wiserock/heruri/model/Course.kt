@@ -7,6 +7,8 @@ import kotlinx.android.parcel.Parcelize
 data class Course(
     var id: Int?,
     var name: String,
+    var done: String,
     var href: String,
-    var professor: String
+    var professor: String,
+    var deadline: String
 ) : Parcelable

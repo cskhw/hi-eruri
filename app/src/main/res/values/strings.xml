@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="setting">설정</string>
+    <string name="logout">로그아웃</string>
+    <string name="coin">동전 던지기</string>
 </resources>

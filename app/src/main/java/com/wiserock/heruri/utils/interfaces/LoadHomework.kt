@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.wiserock.heruri.api.Value
 import com.wiserock.heruri.model.Homework
 import com.wiserock.heruri.utils.MyApp
-import com.wiserock.heruri.view.adapter.CourseAdapter
+import com.wiserock.heruri.view.adapter.HomeworkAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ interface LoadHomework {
             }
 
             MyApp.homeworkIds = homeworkIds
-            CourseAdapter.itemSize = homeworkIds.size
+            HomeworkAdapter.itemSize = homeworkIds.size
             withContext(Dispatchers.IO) {
                 homeworkIds.forEach {
                     var done = false
@@ -64,14 +64,13 @@ interface LoadHomework {
                             deadline = deadline!!
                         )
                     )
-
                 }
-
             }
             withContext(Dispatchers.Main) {
-                CourseAdapter.viewModel.homeworkList.value = MyApp.homeworkArrayList
+                HomeworkAdapter.viewModel.homeworkList.value = MyApp.homeworkArrayList
                 MyApp.loading.value = true
             }
+            println("loadHomework finished")
         }
     }
 }

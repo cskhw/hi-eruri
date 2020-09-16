@@ -5,16 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wiserock.heruri.navigation.course.CourseFragment
 import com.wiserock.heruri.navigation.home.HomeFragment
-import com.wiserock.heruri.navigation.notifications.NotificationsFragment
+import com.wiserock.heruri.navigation.notifications.PushFragment
 import com.wiserock.heruri.utils.AppPreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    companion object {
+        lateinit var dialog: ProgressBar
+    }
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener())
         nav_view.selectedItemId = R.id.navigation_home
-
-
+        dialog = activity_main_progressBar
+        dialog.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -42,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                 preference.setString(this, "password", "")
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
+                true
+            }
+            R.id.app_menu_coin -> {
+                startActivity(Intent(this, CoinActivity::class.java))
                 true
             }
             else -> {
@@ -66,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_notifications -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, NotificationsFragment()).commitNow()
+                        .replace(R.id.nav_host_fragment, PushFragment()).commitNow()
                     true
                 }
                 else -> false

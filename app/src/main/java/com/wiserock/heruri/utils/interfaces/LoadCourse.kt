@@ -1,8 +1,12 @@
 package com.wiserock.heruri.utils.interfaces
 
+import android.view.View
+import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.api.Value
 import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.utils.MyApp
+import com.wiserock.heruri.view.adapter.CourseAdapter
+import com.wiserock.heruri.view.adapter.HomeworkAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,50 +21,73 @@ interface LoadCourse {
             withContext(Dispatchers.IO) {
                 elements.forEach { element ->
                     val id = regex.find(element.attr("href"))?.value?.toInt()
-                    val courseResponse =
+                    val reportResponse =
                         MyApp.getResponseWithUrl(
                             Value.BASE_URL + "report/ubcompletion/user_progress_a.php?id=${id}",
                             Connection.Method.GET
                         )?.parse()
-                    var elements1: ArrayList<String> = arrayListOf()
-                    courseResponse?.select("td.text-left")?.forEach {
-                        elements1.add(it.text())
+                    val names: ArrayList<String> = arrayListOf()
+                    reportResponse?.select("td.text-left")?.forEach {
+                        names.add(it.text())
                     }
-                    var elements2: ArrayList<String> = arrayListOf()
-                    var hrefs: ArrayList<String> = arrayListOf()
-                    courseResponse?.select("tbody tr td[class=text-center]")?.forEach {
-                        if (it.text() == "O") elements2.add(it.text())
-                        val temp = it.select("a")
-                        println("temp = ${temp}")
+                    val checks: ArrayList<String> = arrayListOf()
+                    reportResponse?.select("tr")?.forEach {
+                        val checkElements = it.select("td.text-center")
+                        when (checkElements.size) {
+                            5 -> {
+                                checks.add(checkElements[3].text())
+                            }
+                            3 -> {
+                                checks.add(checkElements.last().text())
+                            }
+                            else -> {
+                            }
+                        }
+                    }
 
-                        //여기까지 작업함
+                    val courseResponse = MyApp.getResponseWithUrl(
+                        url = Value.BASE_URL + "course/view.php?id=$id",
+                        method = Connection.Method.GET
+                    )?.parse()
+                    val coursesHref: ArrayList<String> = arrayListOf()
+                    val deadlines: ArrayList<String> = arrayListOf()
+                    val courseRegex =
+                        """http://eruri.kangwon.ac.kr/mod/vod/viewer.php\?id=[0-9]{1,10}""".toRegex()
+                    courseResponse?.select("div.total_sections div.activityinstance")?.forEach {
+                        val course = courseRegex.find(it.toString())?.value
+                        val deadlineString = it.select("span.text-ubstrap").text()
+                        try {
+                            val deadline = deadlineString.substring(22, 41)
+                            deadlines.add(deadline)
+                        } catch (e: Exception) {
+                        }
+                        if (course != "" && course != null) coursesHref.add(course)
                     }
-                    var elements3: ArrayList<String> = arrayListOf()
-                    courseResponse?.select("tbody tr td[rowspan=2]")?.forEach {
-                        if (it.text() == "O") elements3.add(it.text())
-                    }
-                    courseResponse?.select("tbody tr td[rowspan=1]")?.forEach {
-                        if (it.text() == "O") elements3.add(it.text())
-                    }
-                    courseResponse?.select("tbody tr td[rowspan=3]")?.forEach {
-                        if (it.text() == "O") elements3.add(it.text())
-                    }
-                    val element2Size = elements2.size - elements3.size
-                    println("element2Size = ${element2Size}")
+                    val professor =
+                        courseResponse?.select("div.media-left.media-middle img")?.attr("alt")
                     try {
-                        for (i in 2..element2Size + 2) {
-                            MyApp.course.add(
+                        for (i in 2..coursesHref.size + 2) {
+                            MyApp.courseArrayList.add(
                                 Course(
                                     id = id,
-                                    name = elements1[i],
-                                    href = "",
-                                    professor = ""
+                                    name = names[i],
+                                    done = checks[i - 2],
+                                    href = coursesHref[i - 2],
+                                    professor = professor!!,
+                                    deadline = deadlines[i - 2]
                                 )
                             )
                         }
                     } catch (e: Exception) {
                         println("안녕하신가")
                     }
+                }
+                //element 끝
+                withContext(Dispatchers.Main) {
+                    CourseAdapter.itemSize = MyApp.courseArrayList.size
+                    HomeworkAdapter.viewModel.courseList.value = MyApp.courseArrayList
+                    MainActivity.dialog.visibility = View.GONE
+                    println("loadCourse finished")
                 }
             }
         }

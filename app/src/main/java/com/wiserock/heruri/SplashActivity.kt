@@ -11,7 +11,10 @@ import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.LoadCourse
 import com.wiserock.heruri.utils.interfaces.LoadHomework
+import com.wiserock.heruri.utils.interfaces.LoadNotification
 import com.wiserock.heruri.view.adapter.CourseAdapter
+import com.wiserock.heruri.view.adapter.HomeworkAdapter
+import com.wiserock.heruri.view.adapter.NotificationAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,7 +22,7 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse {
+class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotification {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +64,12 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse {
                     })
                     val viewModel =
                         ViewModelProvider(this@SplashActivity).get(CourseViewModel::class.java)
+                    HomeworkAdapter.viewModel = viewModel
                     CourseAdapter.viewModel = viewModel
+                    NotificationAdapter.viewModel = viewModel
                     loadCourse()
                     loadHomework(this@SplashActivity)
+                    loadNotification()
                 }
             }
         }
