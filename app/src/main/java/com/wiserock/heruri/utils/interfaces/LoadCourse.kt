@@ -39,6 +39,12 @@ interface LoadCourse {
                     courseResponse?.select("tbody tr td[rowspan=2]")?.forEach {
                         if (it.text() == "O") elements3.add(it.text())
                     }
+                    courseResponse?.select("tbody tr td[rowspan=1]")?.forEach {
+                        if (it.text() == "O") elements3.add(it.text())
+                    }
+                    courseResponse?.select("tbody tr td[rowspan=3]")?.forEach {
+                        if (it.text() == "O") elements3.add(it.text())
+                    }
                     val element2Size = elements2.size - elements3.size
                     println("element2Size = ${element2Size}")
                     try {
