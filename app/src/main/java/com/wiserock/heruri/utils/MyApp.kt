@@ -15,7 +15,7 @@ object MyApp : Application() {
     lateinit var index: Connection.Response
     lateinit var cookies: Map<String, String>
     var loading: MutableLiveData<Boolean> = MutableLiveData(false)
-    var homeworkIds: HashSet<Int> = hashSetOf()
+    var homeworkIds: ArrayList<Int> = arrayListOf()
     var homeworkArrayList: ArrayList<Homework> = arrayListOf()
     var courseArrayList: ArrayList<Course> = arrayListOf()
     var notificationArrayList: ArrayList<Notification> = arrayListOf()

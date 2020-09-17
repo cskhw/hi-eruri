@@ -10,6 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
+import java.util.*
 
 interface LoadHomework : OnClickListener {
     fun loadHomework(life: LifecycleOwner) {
@@ -45,12 +46,12 @@ interface LoadHomework : OnClickListener {
                     }
                 }
             }
-
-            MyApp.homeworkIds = homeworkIds
-            HomeworkAdapter.itemSize = homeworkIds.size
-
+            val temp = ArrayList(homeworkIds)
+            temp.sort()
+            MyApp.homeworkIds = temp
+            HomeworkAdapter.itemSize = temp.size
             withContext(Dispatchers.IO) {
-                homeworkIds.forEach {
+                temp.forEach {
                     var done = false
                     val homeworkResponse = MyApp.getResponseWithUrl(
                         Value.BASE_URL + "mod/assign/view.php?id=$it",
