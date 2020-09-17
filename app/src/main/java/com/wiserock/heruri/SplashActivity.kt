@@ -26,13 +26,18 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotifi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel =
+            ViewModelProvider(this).get(CourseViewModel::class.java)
+        HomeworkAdapter.viewModel = viewModel
+        CourseAdapter.viewModel = viewModel
+        NotificationAdapter.viewModel = viewModel
         val preference = AppPreferenceManager
-
+        println("made by wiseRock")
         val username = preference.getString(applicationContext, "username")
         val password = preference.getString(applicationContext, "password")
-
         val loginUrl = Value.BASE_URL + "login/index.php"
-
+        println("username = ${username}")
+        println("password = ${password}")
         val formData: HashMap<String, String> = hashMapOf()
 
         try {
@@ -51,25 +56,23 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotifi
             val homepageHtml = MyApp.index.parse()
             MyApp.html = homepageHtml
             MyApp.cookies = MyApp.index.cookies()
-
             try {
-                homepageHtml.select("div.main_login_find_idpw").first().text()
+                homepageHtml.select("div.main_login_find_idpw").first().text()!!
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()
             } catch (e: NullPointerException) {
                 withContext(Dispatchers.Main) {
                     MyApp.loading.observe(this@SplashActivity, Observer {
+                        val temp = homepageHtml.select("div.user-info-picture").select("h4").text()
+                        preference.setString(this@SplashActivity, "name", temp)
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
                     })
-                    val viewModel =
-                        ViewModelProvider(this@SplashActivity).get(CourseViewModel::class.java)
-                    HomeworkAdapter.viewModel = viewModel
-                    CourseAdapter.viewModel = viewModel
-                    NotificationAdapter.viewModel = viewModel
+
                     loadCourse()
                     loadHomework(this@SplashActivity)
                     loadNotification()
+                    println("코드를 보러 오셨군요.")
                 }
             }
         }

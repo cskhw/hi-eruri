@@ -15,11 +15,16 @@
         <activity
             android:name=".MainActivity"
             android:label="해루리">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
 
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SettingActivity" />
 
-        </activity>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">

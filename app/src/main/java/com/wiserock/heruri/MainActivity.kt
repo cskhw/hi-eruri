@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.wiserock.heruri.navigation.course.CourseFragment
 import com.wiserock.heruri.navigation.home.HomeFragment
 import com.wiserock.heruri.navigation.notifications.PushFragment
@@ -20,12 +21,19 @@ class MainActivity : AppCompatActivity() {
         lateinit var dialog: ProgressBar
     }
 
-    @SuppressLint("RestrictedApi")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        nav_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener())
-        nav_view.selectedItemId = R.id.navigation_home
+        val preference = AppPreferenceManager
+        val name = preference.getString(this, "name")
+        val view: BottomNavigationView = findViewById(R.id.activity_main_bottomNavigation)
+        Snackbar.make(view, "${name}님 안녕하세요!", Snackbar.LENGTH_LONG).show()
+        println("나의 홈그라운드에 온걸 환영한다 우후후...")
+        activity_main_bottomNavigation.setOnNavigationItemSelectedListener(
+            onNavigationItemSelectedListener()
+        )
+        activity_main_bottomNavigation.selectedItemId = R.id.navigation_home
         dialog = activity_main_progressBar
         dialog.visibility = View.VISIBLE
     }
@@ -38,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.app_menu_setting -> {
+                startActivity(Intent(this, SettingActivity::class.java))
                 true
             }
             R.id.app_menu_signOut -> {

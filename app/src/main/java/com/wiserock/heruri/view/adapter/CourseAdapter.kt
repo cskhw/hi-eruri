@@ -10,7 +10,7 @@ import com.wiserock.heruri.databinding.ItemCourseBinding
 import com.wiserock.heruri.navigation.course.CourseViewModel
 import kotlinx.android.synthetic.main.item_homework.view.*
 
-class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CourseAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         var itemSize = 0
         lateinit var viewModel: CourseViewModel
@@ -41,6 +41,7 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val view = holder.itemView
         viewHolder.setIsRecyclable(false)
         viewHolder.bind(position)
+
         try {
             if (viewModel.courseList.value?.get(position)?.done == "O") {
                 view.setBackgroundResource(R.color.white)

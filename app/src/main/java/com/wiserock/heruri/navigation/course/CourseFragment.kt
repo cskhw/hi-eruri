@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.fragment_course.view.*
 
 class CourseFragment : Fragment() {
 
-    private lateinit var viewModel: CourseViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

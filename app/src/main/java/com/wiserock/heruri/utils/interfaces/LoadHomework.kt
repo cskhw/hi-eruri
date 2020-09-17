@@ -11,15 +11,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 
-interface LoadHomework {
+interface LoadHomework : OnClickListener {
     fun loadHomework(life: LifecycleOwner) {
         val elements = MyApp.html.select(".course_link")
-        val regex = "[0-9]{1,10}".toRegex()
+        val numberRegex = "[0-9]{1,10}".toRegex()
+        val homeworkRegex =
+            """mod/assign/view.php\?id=[0-9]{1,10}""".toRegex()
         val homeworkIds: HashSet<Int> = hashSetOf()
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
                 elements.forEach { element ->
-                    val id = regex.find(element.attr("href"))?.value?.toInt()
+                    val id = numberRegex.find(element.attr("href"))?.value?.toInt()
                     val courseResponse =
                         MyApp.getResponseWithUrl(
                             Value.BASE_URL + "course/view.php?id=${id}",
@@ -27,12 +29,18 @@ interface LoadHomework {
                         )?.parse()
                     courseResponse?.select("a")?.forEach {
                         val temp = it.attr("href")
-                        val tempRegex =
-                            """mod/assign/view.php\?id=[0-9]{1,10}""".toRegex()
-                        val value = tempRegex.find(temp)?.value
+                        temp()
+                        val value = homeworkRegex.find(temp)?.value
                         if (value != null) {
-                            val homeworkId = regex.find(value.toString())?.value?.toInt()!!
+                            val homeworkId = numberRegex.find(value.toString())?.value?.toInt()!!
                             homeworkIds.add(homeworkId)
+                        }
+                    }
+                    courseResponse?.select("#section-0")?.forEach {
+                        try {
+                            homeworkIds.add(numberRegex.find("temp")?.value?.toInt()!!)
+                        } catch (e: Exception) {
+                            println("과제가 없다람쥐")
                         }
                     }
                 }
@@ -40,6 +48,7 @@ interface LoadHomework {
 
             MyApp.homeworkIds = homeworkIds
             HomeworkAdapter.itemSize = homeworkIds.size
+
             withContext(Dispatchers.IO) {
                 homeworkIds.forEach {
                     var done = false
@@ -58,10 +67,12 @@ interface LoadHomework {
                             ?.text()
                     MyApp.homeworkArrayList.add(
                         Homework(
+                            id = it,
                             course = course!!,
                             name = name!!,
                             done = done,
-                            deadline = deadline!!
+                            deadline = deadline!!,
+                            href = Value.BASE_URL + "mod/assign/view.php?id=$it"
                         )
                     )
                 }
@@ -71,6 +82,7 @@ interface LoadHomework {
                 MyApp.loading.value = true
             }
             println("loadHomework finished")
+            println("MyApp.homeworkArrayList = ${MyApp.homeworkArrayList}")
         }
     }
 }

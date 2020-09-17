@@ -9,6 +9,9 @@ import com.wiserock.heruri.api.Api
 import com.wiserock.heruri.api.Value
 import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
+import com.wiserock.heruri.utils.interfaces.LoadCourse
+import com.wiserock.heruri.utils.interfaces.LoadHomework
+import com.wiserock.heruri.utils.interfaces.LoadNotification
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +19,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotification {
     private var username: String = ""
     private var password: String = ""
     private val userAgent =
@@ -26,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("로그인은 사실 사천왕중 최약최라구...")
         setContentView(R.layout.activity_login)
         Api.update(Value.BASE_URL)
         val loginUrl = Value.BASE_URL + "login/index.php"
@@ -52,9 +56,9 @@ class LoginActivity : AppCompatActivity() {
                 val homepageHtml = MyApp.index.parse()
                 MyApp.html = homepageHtml
                 MyApp.cookies = MyApp.index.cookies()
-                
+
                 try {
-                    homepageHtml.select("div.main_login_find_idpw").first().text()
+                    homepageHtml.select("div.main_login_find_idpw").first().text()!!
                     GlobalScope.launch(Dispatchers.Main) {
                         Toast.makeText(
                             applicationContext,
@@ -64,7 +68,12 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                     }
                 } catch (e: NullPointerException) {
+                    val temp = homepageHtml.select("div.user-info-picture").select("h4").text()
+                    preference.setString(this@LoginActivity, "name", temp)
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    loadCourse()
+                    loadHomework(this@LoginActivity)
+                    loadNotification()
                     finish()
                 }
             }

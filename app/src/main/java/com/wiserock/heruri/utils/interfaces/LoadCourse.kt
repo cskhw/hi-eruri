@@ -79,7 +79,7 @@ interface LoadCourse {
                             )
                         }
                     } catch (e: Exception) {
-                        println("안녕하신가")
+                        println("안녕하신가제트")
                     }
                 }
                 //element 끝
@@ -88,6 +88,7 @@ interface LoadCourse {
                     HomeworkAdapter.viewModel.courseList.value = MyApp.courseArrayList
                     MainActivity.dialog.visibility = View.GONE
                     println("loadCourse finished")
+                    println("MyApp.courseArrayList = ${MyApp.courseArrayList}")
                 }
             }
         }
