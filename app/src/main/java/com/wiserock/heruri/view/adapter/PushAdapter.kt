@@ -5,39 +5,34 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wiserock.heruri.R
-import com.wiserock.heruri.databinding.ItemNotificationBinding
+import com.wiserock.heruri.databinding.ItemPushBinding
 import com.wiserock.heruri.navigation.course.LectureViewModel
 
-class NotificationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PushAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
-        lateinit var viewModel: LectureViewModel
         var itemSize = 0
+        lateinit var viewModel: LectureViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding: ItemNotificationBinding = DataBindingUtil.inflate(
+        val binding: ItemPushBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_notification,
-            parent,
-            false
+            R.layout.item_push, parent, false
         )
-        return NotificationViewHolder(binding)
+        return PushViewHolder(binding)
     }
 
-
-    inner class NotificationViewHolder(private val binding: ItemNotificationBinding) :
+    inner class PushViewHolder(val binding: ItemPushBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
+            binding.executePendingBindings()
             binding.course = viewModel
             binding.pos = position
-            binding.executePendingBindings()
         }
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewHolder = holder as NotificationViewHolder
-        val view = holder.itemView
+        val viewHolder = holder as PushViewHolder
         viewHolder.bind(position)
     }
 

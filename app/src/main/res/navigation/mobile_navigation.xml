@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_home"
+    tools:ignore="UnusedNavigation">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -12,10 +13,10 @@
         tools:layout="@layout/fragment_notification" />
 
     <fragment
-        android:id="@+id/navigation_course"
-        android:name="com.wiserock.heruri.navigation.course.CourseFragment"
+        android:id="@+id/navigation_lecture"
+        android:name="com.wiserock.heruri.navigation.course.LectureFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_lecture" />
 
     <fragment
         android:id="@+id/navigation_notifications"

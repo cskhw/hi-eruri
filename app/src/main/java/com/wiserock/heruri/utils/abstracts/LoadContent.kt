@@ -6,4 +6,5 @@ import com.wiserock.heruri.utils.interfaces.LoadNotification
 
 abstract class LoadContent : LoadCourse, LoadHomework, LoadNotification {
     abstract fun mixContent()
+
 }

@@ -1,14 +1,23 @@
 package com.wiserock.heruri.navigation.notifications
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
+import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.R
+import com.wiserock.heruri.databinding.FragmentPushBinding
+import com.wiserock.heruri.utils.MyApp
+import com.wiserock.heruri.view.adapter.CourseAdapter
+import com.wiserock.heruri.view.adapter.PushAdapter
+import kotlinx.android.synthetic.main.fragment_push.view.*
 
 class PushFragment : Fragment() {
 
@@ -19,13 +28,25 @@ class PushFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        println("안녕 친구들 나는 빡빡이 아죠씨야!! (*^*)")
         notificationsViewModel =
             ViewModelProvider(this).get(PushViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_push, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val binding: FragmentPushBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_push, container, false)
+        val view = binding.root
+        MainActivity.dialog.visibility = View.VISIBLE
+        Handler(Looper.getMainLooper()).postDelayed({
+            MainActivity.dialog.visibility = View.GONE
+        }, 2000)
+        val recyclerView = view.fragment_push_recycler
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        CourseAdapter.viewModel.pushList.value = MyApp.pushArrayList
+        CourseAdapter.viewModel.pushList.observe(viewLifecycleOwner, Observer {
+            MainActivity.dialog.visibility = View.GONE
+            recyclerView.adapter?.notifyDataSetChanged()
+            recyclerView.adapter = PushAdapter()
+            MainActivity.dialog.visibility = View.GONE
         })
-        return root
+        return view
     }
 }

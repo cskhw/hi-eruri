@@ -7,14 +7,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.ItemHomeworkBinding
-import com.wiserock.heruri.navigation.course.CourseViewModel
+import com.wiserock.heruri.navigation.course.LectureViewModel
 import kotlinx.android.synthetic.main.item_homework.view.*
 
 
 class HomeworkAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         var itemSize = 0
-        lateinit var viewModel: CourseViewModel
+        lateinit var viewModel: LectureViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

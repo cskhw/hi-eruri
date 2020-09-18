@@ -10,32 +10,31 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.R
-import com.wiserock.heruri.databinding.FragmentCourseBinding
+import com.wiserock.heruri.databinding.FragmentHomeworkBinding
 import com.wiserock.heruri.utils.MyApp
-import com.wiserock.heruri.view.adapter.CourseAdapter
 import com.wiserock.heruri.view.adapter.HomeworkAdapter
-import kotlinx.android.synthetic.main.fragment_course.view.*
+import kotlinx.android.synthetic.main.fragment_homework.view.*
 
-class CourseFragment : Fragment() {
+class HomeworkFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentCourseBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_course, container, false)
+        val binding: FragmentHomeworkBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_homework, container, false)
         val view = binding.root
         val homeworkViewModel = HomeworkAdapter.viewModel
-        val recyclerView = view.fragment_course_recycler
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        val progressBar = view.fragment_course_progressBar
+        val progressBar = view.fragment_homework_progressBar
         progressBar.visibility = View.VISIBLE
-        homeworkViewModel.courseList.value = MyApp.courseArrayList
-        homeworkViewModel.courseList.observe(viewLifecycleOwner, Observer {
+        val recyclerView = view.fragment_homework_recycler
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        homeworkViewModel.homeworkList.value = MyApp.homeworkArrayList
+        homeworkViewModel.homeworkList.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = View.GONE
             MainActivity.dialog.visibility = View.GONE
             recyclerView.adapter?.notifyDataSetChanged()
-            recyclerView.adapter = CourseAdapter()
+            recyclerView.adapter = HomeworkAdapter()
         })
         return view
     }

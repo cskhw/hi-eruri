@@ -6,30 +6,43 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.wiserock.heruri.navigation.course.CourseFragment
+import com.google.firebase.iid.FirebaseInstanceId
+import com.wiserock.heruri.navigation.course.LectureFragment
+import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.navigation.home.HomeFragment
 import com.wiserock.heruri.navigation.notifications.PushFragment
 import com.wiserock.heruri.utils.AppPreferenceManager
+import com.wiserock.heruri.utils.MyApp
+import com.wiserock.template.model.AppDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var dialog: ProgressBar
+        lateinit var appDatabase: AppDatabase
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+            if (!it.isSuccessful)
+                println("it.exception = ${it.exception}")
+            println("it.result?.id = ${it.result?.id}")
+            println("it.result.token = ${it.result?.token}")
+        }
+        appDatabase = AppDatabase.getInstance(this)
         val preference = AppPreferenceManager
         val name = preference.getString(this, "name")
-        val view: BottomNavigationView = findViewById(R.id.activity_main_bottomNavigation)
-        Snackbar.make(view, "${name}님 안녕하세요!", Snackbar.LENGTH_LONG).show()
-        println("나의 홈그라운드에 온걸 환영한다 우후후...")
+        val view: FrameLayout = findViewById(R.id.activity_main_fragment)
+        Snackbar.make(view, "${name}님 안녕하세요!", Snackbar.LENGTH_SHORT).show()
         activity_main_bottomNavigation.setOnNavigationItemSelectedListener(
             onNavigationItemSelectedListener()
         )
@@ -51,8 +64,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.app_menu_signOut -> {
                 val preference = AppPreferenceManager
-                preference.setString(this, "username", "")
-                preference.setString(this, "password", "")
+                preference.setString(applicationContext, "username", "")
+                preference.setString(applicationContext, "password", "")
+                val viewModel =
+                    ViewModelProvider(this).get(LectureViewModel::class.java)
+                MyApp.init(viewModel)
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
                 true
@@ -73,17 +89,17 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navigation_home -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, HomeFragment()).commitNow()
+                        .replace(R.id.activity_main_fragment, HomeFragment()).commitNow()
                     true
                 }
-                R.id.navigation_course -> {
+                R.id.navigation_lecture -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, CourseFragment()).commitNow()
+                        .replace(R.id.activity_main_fragment, LectureFragment()).commitNow()
                     true
                 }
                 R.id.navigation_notifications -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, PushFragment()).commitNow()
+                        .replace(R.id.activity_main_fragment, PushFragment()).commitNow()
                     true
                 }
                 else -> false

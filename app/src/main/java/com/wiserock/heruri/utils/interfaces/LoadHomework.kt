@@ -10,6 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
+import org.jsoup.nodes.Document
 import java.util.*
 
 interface LoadHomework : OnClickListener {
@@ -53,10 +54,13 @@ interface LoadHomework : OnClickListener {
             withContext(Dispatchers.IO) {
                 temp.forEach {
                     var done = false
-                    val homeworkResponse = MyApp.getResponseWithUrl(
-                        Value.BASE_URL + "mod/assign/view.php?id=$it",
-                        Connection.Method.GET
-                    )?.parse()
+                    var homeworkResponse: Document?
+                    withContext(Dispatchers.IO) {
+                        homeworkResponse = MyApp.getResponseWithUrl(
+                            Value.BASE_URL + "mod/assign/view.php?id=$it",
+                            Connection.Method.GET
+                        )?.parse()
+                    }
                     val course = homeworkResponse?.select("div.coursename h1")?.text()
                     val name =
                         homeworkResponse?.select("li a[title=과제]")?.text()

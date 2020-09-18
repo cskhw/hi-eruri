@@ -5,13 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.wiserock.heruri.api.Api
 import com.wiserock.heruri.api.Value
+import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.LoadCourse
 import com.wiserock.heruri.utils.interfaces.LoadHomework
 import com.wiserock.heruri.utils.interfaces.LoadNotification
+import com.wiserock.heruri.utils.interfaces.LoadPush
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,7 +22,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotification {
+class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotification, LoadPush {
     private var username: String = ""
     private var password: String = ""
     private val userAgent =
@@ -29,10 +32,13 @@ class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotific
     @SuppressLint("SetJavaScriptEnabled", "AddJavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("로그인은 사실 사천왕중 최약최라구...")
         setContentView(R.layout.activity_login)
         Api.update(Value.BASE_URL)
+        val viewModel =
+            ViewModelProvider(this).get(LectureViewModel::class.java)
         val loginUrl = Value.BASE_URL + "login/index.php"
+        MyApp.init(viewModel)
+
         activity_login_button.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
 
@@ -41,8 +47,8 @@ class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotific
 
                 val preference = AppPreferenceManager
 
-                preference.setString(this@LoginActivity, "username", username)
-                preference.setString(this@LoginActivity, "password", password)
+                preference.setString(applicationContext, "username", username)
+                preference.setString(applicationContext, "password", password)
 
                 val formData: HashMap<String, String> = hashMapOf()
 
@@ -69,8 +75,9 @@ class LoginActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotific
                     }
                 } catch (e: NullPointerException) {
                     val temp = homepageHtml.select("div.user-info-picture").select("h4").text()
-                    preference.setString(this@LoginActivity, "name", temp)
+                    preference.setString(applicationContext, "name", temp)
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    loadPush(this@LoginActivity)
                     loadCourse()
                     loadHomework(this@LoginActivity)
                     loadNotification()

@@ -6,7 +6,7 @@ import androidx.room.*
 interface UserDAO {
 
     @Query("Select * From user")
-    fun getAll(userEntity: UserEntity): List<UserEntity>
+    fun getAll(): List<UserEntity>
 
     @Insert
     fun insert(userEntity: UserEntity)

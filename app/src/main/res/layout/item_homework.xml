@@ -5,7 +5,7 @@
 
         <variable
             name="course"
-            type="com.wiserock.heruri.navigation.course.CourseViewModel" />
+            type="com.wiserock.heruri.navigation.course.LectureViewModel" />
 
         <variable
             name="pos"

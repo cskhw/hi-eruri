@@ -5,16 +5,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.iid.FirebaseInstanceId
 import com.wiserock.heruri.api.Value
-import com.wiserock.heruri.navigation.course.CourseViewModel
+import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.LoadCourse
 import com.wiserock.heruri.utils.interfaces.LoadHomework
 import com.wiserock.heruri.utils.interfaces.LoadNotification
-import com.wiserock.heruri.view.adapter.CourseAdapter
-import com.wiserock.heruri.view.adapter.HomeworkAdapter
-import com.wiserock.heruri.view.adapter.NotificationAdapter
+import com.wiserock.heruri.utils.interfaces.LoadPush
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,15 +21,20 @@ import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 
-class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotification {
+class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse,
+    LoadNotification, LoadPush {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         val viewModel =
-            ViewModelProvider(this).get(CourseViewModel::class.java)
-        HomeworkAdapter.viewModel = viewModel
-        CourseAdapter.viewModel = viewModel
-        NotificationAdapter.viewModel = viewModel
+            ViewModelProvider(this).get(LectureViewModel::class.java)
+        MyApp.init(viewModel)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener { task ->
+            }
+
         val preference = AppPreferenceManager
         println("made by wiseRock")
         val username = preference.getString(applicationContext, "username")
@@ -46,6 +50,8 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotifi
         } catch (e: Exception) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+
+
 
         GlobalScope.launch(Dispatchers.IO) {
             MyApp.index = Jsoup.connect(loginUrl)
@@ -64,11 +70,11 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse, LoadNotifi
                 withContext(Dispatchers.Main) {
                     MyApp.loading.observe(this@SplashActivity, Observer {
                         val temp = homepageHtml.select("div.user-info-picture").select("h4").text()
-                        preference.setString(this@SplashActivity, "name", temp)
+                        preference.setString(applicationContext, "name", temp)
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
                     })
-
+                    loadPush(this@SplashActivity)
                     loadCourse()
                     loadHomework(this@SplashActivity)
                     loadNotification()
