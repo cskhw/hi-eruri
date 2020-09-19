@@ -49,6 +49,8 @@ interface LoadHomework : OnClickListener {
             }
             val temp = ArrayList(homeworkIds)
             temp.sort()
+            temp.reverse()
+            println("temp = ${temp}")
             MyApp.homeworkIds = temp
             HomeworkAdapter.itemSize = temp.size
             withContext(Dispatchers.IO) {

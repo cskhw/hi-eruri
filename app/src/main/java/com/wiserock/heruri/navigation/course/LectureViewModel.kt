@@ -14,7 +14,6 @@ import com.wiserock.heruri.model.push.PushEntity
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.TimeStamp
 import com.wiserock.heruri.view.adapter.CourseAdapter
-import com.wiserock.heruri.view.adapter.PushAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,7 +40,6 @@ class LectureViewModel : ViewModel(), TimeStamp {
             MainActivity.appDatabase.pushDAO().delete(MyApp.pushArrayList[position])
             MyApp.pushArrayList.removeAt(position)
             launch(Dispatchers.Main) {
-                PushAdapter.itemSize = MyApp.pushArrayList.size
                 CourseAdapter.viewModel.pushList.value = MyApp.pushArrayList
             }
         }

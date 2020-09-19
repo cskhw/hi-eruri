@@ -37,6 +37,7 @@ class CourseFragment : Fragment() {
             recyclerView.adapter?.notifyDataSetChanged()
             recyclerView.adapter = CourseAdapter()
         })
+
         return view
     }
 }

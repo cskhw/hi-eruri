@@ -41,12 +41,17 @@ class PushFragment : Fragment() {
         val recyclerView = view.fragment_push_recycler
         recyclerView.itemAnimator = DefaultItemAnimator()
         CourseAdapter.viewModel.pushList.value = MyApp.pushArrayList
-        CourseAdapter.viewModel.pushList.observe(viewLifecycleOwner, Observer {
-            MainActivity.dialog.visibility = View.GONE
-            recyclerView.adapter?.notifyDataSetChanged()
-            recyclerView.adapter = PushAdapter()
-            MainActivity.dialog.visibility = View.GONE
-        })
+        CourseAdapter.viewModel.pushList.observe(
+            viewLifecycleOwner,
+            Observer {
+                recyclerView.animate().setDuration(200).alpha(0.3f).withEndAction {
+                    PushAdapter.itemSize = MyApp.pushArrayList.size
+                    recyclerView.adapter = PushAdapter()
+                    recyclerView.animate().setDuration(100).alpha(1f).start()
+                }.start()
+                MainActivity.dialog.visibility = View.GONE
+            }
+        )
         return view
     }
 }

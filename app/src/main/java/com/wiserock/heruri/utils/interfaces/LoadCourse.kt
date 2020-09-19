@@ -85,6 +85,7 @@ interface LoadCourse {
                 //element 끝
                 withContext(Dispatchers.Main) {
                     CourseAdapter.itemSize = MyApp.courseArrayList.size
+                    MyApp.courseArrayList.reverse()
                     HomeworkAdapter.viewModel.courseList.value = MyApp.courseArrayList
                     MainActivity.dialog.visibility = View.GONE
                     println("loadCourse finished")

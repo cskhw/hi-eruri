@@ -7,10 +7,9 @@
 
     <item
         android:id="@+id/app_menu_signOut"
-        android:title="@string/logout"/>
+        android:title="@string/logout" />
 
     <item
         android:id="@+id/app_menu_coin"
-        android:title="@string/coin"
-        />
+        android:title="@string/coin" />
 </menu>

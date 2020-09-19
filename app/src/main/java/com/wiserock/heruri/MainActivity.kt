@@ -3,8 +3,6 @@ package com.wiserock.heruri
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
@@ -28,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         lateinit var appDatabase: AppDatabase
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,43 +40,58 @@ class MainActivity : AppCompatActivity() {
         val name = preference.getString(this, "name")
         val view: FrameLayout = findViewById(R.id.activity_main_fragment)
         Snackbar.make(view, "${name}님 안녕하세요!", Snackbar.LENGTH_SHORT).show()
+        activity_main_nickname.text = name
         activity_main_bottomNavigation.setOnNavigationItemSelectedListener(
             onNavigationItemSelectedListener()
         )
         activity_main_bottomNavigation.selectedItemId = R.id.navigation_home
         dialog = activity_main_progressBar
         dialog.visibility = View.VISIBLE
+        activity_main_button_menu.setOnClickListener(onClickMenuButtonListener())
+        activity_main_menu_block.setOnClickListener(onClickMenuBlockListener())
+        activity_main_button_coin.setOnClickListener(onClickButtonCoinListener())
+        activity_main_button_logout.setOnClickListener(onClickButtonLogoutListener())
+        activity_main_button_setting.setOnClickListener(onClickButtonSettingListener())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_menu, menu)
-        return true
+    private fun onClickButtonSettingListener(): View.OnClickListener? {
+        return View.OnClickListener {
+            startActivity(Intent(this, SettingActivity::class.java))
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.app_menu_setting -> {
-                startActivity(Intent(this, SettingActivity::class.java))
-                true
-            }
-            R.id.app_menu_signOut -> {
-                val preference = AppPreferenceManager
-                preference.setString(applicationContext, "username", "")
-                preference.setString(applicationContext, "password", "")
-                val viewModel =
-                    ViewModelProvider(this).get(LectureViewModel::class.java)
-                MyApp.init(viewModel)
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-                true
-            }
-            R.id.app_menu_coin -> {
-                startActivity(Intent(this, CoinActivity::class.java))
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
+    private fun onClickButtonLogoutListener(): View.OnClickListener? {
+        return View.OnClickListener {
+            val preference = AppPreferenceManager
+            preference.setString(applicationContext, "username", "")
+            preference.setString(applicationContext, "password", "")
+            val viewModel =
+                ViewModelProvider(this).get(LectureViewModel::class.java)
+            MyApp.init(viewModel)
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun onClickButtonCoinListener(): View.OnClickListener? {
+        return View.OnClickListener {
+            startActivity(Intent(this, CoinActivity::class.java))
+        }
+    }
+
+    private fun onClickMenuBlockListener(): View.OnClickListener? {
+        return View.OnClickListener {
+            activity_main_constraint.animate().translationX(0f).start()
+            activity_main_constraint_menu.animate().translationX(0f).start()
+            activity_main_menu_block.animate().translationX(0f).start()
+        }
+    }
+
+    private fun onClickMenuButtonListener(): View.OnClickListener? {
+        return View.OnClickListener {
+            activity_main_constraint.animate().translationX(-700f).start()
+            activity_main_constraint_menu.animate().translationX(-700f).start()
+            activity_main_menu_block.animate().translationX(-1520f).start()
         }
     }
 

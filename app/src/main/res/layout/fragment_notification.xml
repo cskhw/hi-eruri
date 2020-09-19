@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/fragment_home_tooltip"
-            android:text="네비게이션 아이콘을 누르면 리프레시됩니다."
+            android:text="아래 네비게이션 아이콘을 누르면 리프레시됩니다."
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_width="match_parent"

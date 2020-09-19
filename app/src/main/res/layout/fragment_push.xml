@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingBottom="20dp" />
+            android:paddingBottom="50dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
