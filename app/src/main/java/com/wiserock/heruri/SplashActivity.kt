@@ -40,8 +40,6 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse,
         val username = preference.getString(applicationContext, "username")
         val password = preference.getString(applicationContext, "password")
         val loginUrl = Value.BASE_URL + "login/index.php"
-        println("username = ${username}")
-        println("password = ${password}")
         val formData: HashMap<String, String> = hashMapOf()
 
         try {

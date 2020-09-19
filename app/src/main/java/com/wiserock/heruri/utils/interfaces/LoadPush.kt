@@ -14,7 +14,6 @@ interface LoadPush {
             val appDatabase = AppDatabase.getInstance(context)
             MyApp.pushArrayList = appDatabase.pushDAO().getAll() as ArrayList
             PushAdapter.itemSize = MyApp.pushArrayList.size
-            println("MyApp.pushArrayList = ${MyApp.pushArrayList}")
             println("loadPush finished")
         }
     }

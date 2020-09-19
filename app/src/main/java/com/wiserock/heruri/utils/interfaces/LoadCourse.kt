@@ -89,7 +89,6 @@ interface LoadCourse {
                     HomeworkAdapter.viewModel.courseList.value = MyApp.courseArrayList
                     MainActivity.dialog.visibility = View.GONE
                     println("loadCourse finished")
-                    println("MyApp.courseArrayList = ${MyApp.courseArrayList}")
                 }
             }
         }

@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
             if (!it.isSuccessful)
                 println("it.exception = ${it.exception}")
-            println("it.result?.id = ${it.result?.id}")
             println("it.result.token = ${it.result?.token}")
         }
         appDatabase = AppDatabase.getInstance(this)

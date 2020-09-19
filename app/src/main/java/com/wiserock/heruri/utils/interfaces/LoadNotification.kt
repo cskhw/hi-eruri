@@ -38,7 +38,6 @@ interface LoadNotification {
                 HomeworkAdapter.viewModel.notificationList.value = MyApp.notificationArrayList
             }
             println("made by wiseRock")
-            println("MyApp.notificationArrayList = ${MyApp.notificationArrayList}")
         }
     }
 }

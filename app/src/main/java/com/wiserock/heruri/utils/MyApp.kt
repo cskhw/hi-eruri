@@ -37,12 +37,6 @@ object MyApp : Application() {
         viewModel.courseList.value = arrayListOf()
         viewModel.homeworkList.value = arrayListOf()
         viewModel.notificationList.value = arrayListOf()
-        println("courseArrayList = ${courseArrayList}")
-        println(
-            "        viewModel.courseList.value?.clear()\n         = ${
-                viewModel.courseList.value
-            }"
-        )
     }
 
     fun getResponseWithUrl(
