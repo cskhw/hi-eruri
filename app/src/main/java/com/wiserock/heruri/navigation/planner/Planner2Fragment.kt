@@ -11,10 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.FragmentPlanner2Binding
-import com.wiserock.heruri.utils.classes.Planner
+import com.wiserock.heruri.utils.Planner
 import com.wiserock.heruri.view.adapter.PlannerAdapter
 import kotlinx.android.synthetic.main.fragment_planner2.view.*
-import java.util.*
 
 class Planner2Fragment : Fragment() {
     override fun onCreateView(
@@ -29,7 +28,8 @@ class Planner2Fragment : Fragment() {
         val view = binding.root
         val recycler = view.fragment2_planner_recycler
         recycler.layoutManager = StaggeredGridLayoutManager(7, 1)
-        Planner.selectedCalendar.set(Calendar.MONTH, 0)
+        Planner.setDays(viewModel)
+        println("fragment2")
         viewModel.dayArrayList.observe(viewLifecycleOwner, Observer {
             println("observe")
             recycler.adapter?.notifyDataSetChanged()

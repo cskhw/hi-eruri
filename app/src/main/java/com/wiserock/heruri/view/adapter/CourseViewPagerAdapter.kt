@@ -13,7 +13,6 @@ class CourseViewPagerAdapter(
     override fun getCount(): Int = size
 
     override fun getItem(position: Int): Fragment {
-        println("getItem")
         return when (position) {
             0 -> CourseFragment()
             1 -> HomeworkFragment()
