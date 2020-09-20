@@ -1,4 +1,4 @@
-package com.wiserock.heruri.utils
+package com.wiserock.heruri.utils.classes
 
 import android.app.AlertDialog
 import android.content.Context

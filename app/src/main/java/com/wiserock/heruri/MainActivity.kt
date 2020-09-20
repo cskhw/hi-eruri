@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
+import com.wiserock.heruri.navigation.planner.PlannerFragment
 import com.wiserock.heruri.navigation.course.LectureFragment
 import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.navigation.home.HomeFragment
@@ -111,6 +112,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_notifications -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.activity_main_fragment, PushFragment()).commitNow()
+                    true
+                }
+                R.id.navigation_planner -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.activity_main_fragment, PlannerFragment()).commitNow()
                     true
                 }
                 else -> false

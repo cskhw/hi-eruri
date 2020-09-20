@@ -23,7 +23,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="20dp"
+                android:layout_marginTop="25dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:backgroundTint="@color/lightGray"
                 app:layout_constraintRight_toRightOf="parent"
