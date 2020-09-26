@@ -6,7 +6,7 @@ import androidx.room.Dao
 import androidx.room.Query
 
 @Dao
-interface DayDao {
+interface DayDAO {
     @Query("select * from day")
     fun getAllPlan(): List<DayWithPlan>
 }

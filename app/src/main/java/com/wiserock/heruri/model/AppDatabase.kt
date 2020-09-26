@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.wiserock.heruri.model.day.DayDAO
 import com.wiserock.heruri.model.push.PushDAO
 import com.wiserock.heruri.model.push.PushEntity
 import com.wiserock.template.model.user.UserDAO
@@ -18,6 +19,7 @@ import com.wiserock.template.model.user.UserEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDAO(): UserDAO
     abstract fun pushDAO(): PushDAO
+    abstract fun dayDAO(): DayDAO
 
     companion object {
         const val DB_NAME = "application-db"
