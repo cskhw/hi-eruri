@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Course(
-    var id: Int?,
+    var id: Long,
     var name: String,
     var done: String,
     var href: String,

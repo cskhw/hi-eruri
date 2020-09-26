@@ -1,14 +1,17 @@
-package com.wiserock.heruri.model
+package com.wiserock.heruri.model.day
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "day"
 )
 data class Day(
 
-    @ColumnInfo(name = "day")
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
+    var time: Long? = 0,
     var day: String
 )

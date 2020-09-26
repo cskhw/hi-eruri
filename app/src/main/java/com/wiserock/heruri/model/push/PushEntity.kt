@@ -14,7 +14,7 @@ data class PushEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = "name")
     var name: String,

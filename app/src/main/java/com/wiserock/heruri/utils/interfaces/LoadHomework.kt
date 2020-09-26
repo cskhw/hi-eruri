@@ -73,7 +73,7 @@ interface LoadHomework : OnClickListener {
                             ?.text()
                     MyApp.homeworkArrayList.add(
                         Homework(
-                            id = it,
+                            id = it.toLong(),
                             course = course!!,
                             name = name!!,
                             done = done,

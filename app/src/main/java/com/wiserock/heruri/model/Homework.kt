@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Homework(
-    var id: Int,
+    var id: Long,
     var course: String,
     var name: String,
     var done: Boolean,

@@ -1,6 +1,6 @@
 package com.wiserock.heruri.utils
 
-import com.wiserock.heruri.model.Day
+import com.wiserock.heruri.model.day.Day
 import com.wiserock.heruri.navigation.planner.PlannerViewModel
 import com.wiserock.heruri.view.adapter.PlannerAdapter
 import java.util.*
@@ -33,8 +33,23 @@ object Planner {
         println("startDay = ${startDay}")
         PlannerAdapter.itemSize = days + startDay
         val temp: ArrayList<Day> = arrayListOf()
-        for (i in 0 until startDay) temp.add(Day(day = " "))
-        for (i in startDay..days + startDay) temp.add(Day(day = (i - startDay + 1).toString()))
+        for (i in 0 until startDay) temp.add(
+            Day(
+                day = " "
+            )
+        )
+
+        for (i in startDay..days + startDay) {
+            val time = selectedCalendar.time.time
+            temp.add(
+                Day(
+                    time = time,
+                    day = (i - startDay + 1).toString()
+                )
+            )
+            selectedCalendar.add(Calendar.DATE, 1)
+        }
+        selectedCalendar.add(Calendar.MONTH, -1)
         println("1")
         viewModel.dayArrayList.value = temp
         println("viewModel.dayArrayList.value = ${viewModel.dayArrayList.value}")

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -21,6 +22,7 @@ import java.util.*
 
 class PlannerFragment : Fragment() {
     var index = 0
+    lateinit var mViewPagerAdapter: FragmentStatePagerAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -28,17 +30,18 @@ class PlannerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        selectedCalendar = Calendar.getInstance()
         val binding: FragmentPlannerBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_planner, container, false)
         val view = binding.root
-        val viewModel = ViewModelProvider(this).get(PlannerViewModel::class.java)
-        Planner.currentCalendar = Calendar.getInstance()
-        PlannerAdapter.viewModel = viewModel
         val viewPager = view.fragment_planner_viewPager
-        viewPager.offscreenPageLimit = 3
+        val viewModel = ViewModelProvider(this).get(PlannerViewModel::class.java)
         val year = selectedCalendar.get(Calendar.YEAR)
         val month = selectedCalendar.get(Calendar.MONTH)
+        mViewPagerAdapter = PlannerViewPagerAdapter(childFragmentManager, 100)
+        selectedCalendar = Calendar.getInstance()
+        Planner.currentCalendar = Calendar.getInstance()
+        PlannerAdapter.viewModel = viewModel
+        viewPager.offscreenPageLimit = 3
         println("month = ${month}")
         viewModel.year.value = year.toString()
         viewModel.month.value = month.toString()
@@ -49,7 +52,7 @@ class PlannerFragment : Fragment() {
             view.fragment_planner_date.text =
                 "${viewModel.year.value}년 ${(viewModel.month.value!!.toInt() + 1)}월"
         })
-        viewPager.adapter = PlannerViewPagerAdapter(childFragmentManager, 100)
+        viewPager.adapter = mViewPagerAdapter
         viewPager.currentItem = 49
         index = 49
         viewPager.addOnPageChangeListener(onPageChangeListener(viewModel))
@@ -85,6 +88,7 @@ class PlannerFragment : Fragment() {
                         viewModel.month.value = selectedCalendar.get(Calendar.MONTH).toString()
                         Planner.setDays(viewModel)
                         index = position
+                        refresh()
                     }
                     position > index -> {
                         println("month + 1")
@@ -95,6 +99,7 @@ class PlannerFragment : Fragment() {
                         viewModel.month.value = selectedCalendar.get(Calendar.MONTH).toString()
                         Planner.setDays(viewModel)
                         index = position
+                        refresh()
                     }
                     else -> {
                         println("month")
@@ -102,8 +107,13 @@ class PlannerFragment : Fragment() {
                         viewModel.month.value = selectedCalendar.get(Calendar.MONTH).toString()
                         Planner.setDays(viewModel)
                         index = position
+                        refresh()
                     }
                 }
+            }
+
+            fun refresh() {
+                mViewPagerAdapter.notifyDataSetChanged()
             }
         }
     }
