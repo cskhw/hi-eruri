@@ -14,15 +14,19 @@ import androidx.viewpager.widget.ViewPager
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.FragmentPlannerBinding
 import com.wiserock.heruri.utils.Planner
+import com.wiserock.heruri.utils.Planner.currentCalendar
 import com.wiserock.heruri.utils.Planner.selectedCalendar
-import com.wiserock.heruri.view.adapter.PlannerAdapter
+import com.wiserock.heruri.view.adapter.DayAdapter
 import com.wiserock.heruri.view.adapter.PlannerViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_planner.view.*
 import java.util.*
 
 class PlannerFragment : Fragment() {
-    var index = 0
-    lateinit var mViewPagerAdapter: FragmentStatePagerAdapter
+    companion object {
+        var index = 0
+        lateinit var mViewPagerAdapter: FragmentStatePagerAdapter
+        lateinit var plannerViewModel: PlannerViewModel
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -34,29 +38,29 @@ class PlannerFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_planner, container, false)
         val view = binding.root
         val viewPager = view.fragment_planner_viewPager
-        viewPager.offscreenPageLimit = 3
-        val viewModel = ViewModelProvider(this).get(PlannerViewModel::class.java)
         val year = selectedCalendar.get(Calendar.YEAR)
         val month = selectedCalendar.get(Calendar.MONTH)
+        viewPager.offscreenPageLimit = 1
+
+        plannerViewModel = ViewModelProvider(this).get(PlannerViewModel::class.java)
         mViewPagerAdapter = PlannerViewPagerAdapter(childFragmentManager, 100)
         selectedCalendar = Calendar.getInstance()
-        Planner.currentCalendar = Calendar.getInstance()
-        PlannerAdapter.viewModel = viewModel
-        viewPager.offscreenPageLimit = 3
+        currentCalendar = Calendar.getInstance()
+        DayAdapter.dayAdapterViewModel = plannerViewModel
         println("month = ${month}")
-        viewModel.year.value = year.toString()
-        viewModel.month.value = month.toString()
-        val todayText = "${viewModel.year.value}년 ${viewModel.month.value + 1}월"
+        plannerViewModel.year.value = year.toString()
+        plannerViewModel.month.value = month.toString()
+        val todayText = "${plannerViewModel.year.value}년 ${plannerViewModel.month.value + 1}월"
         view.fragment_planner_date.text = todayText
-        println("viewModel.month.value = ${viewModel.month.value}")
-        viewModel.month.observe(viewLifecycleOwner, Observer {
+        println("viewModel.month.value = ${plannerViewModel.month.value}")
+        plannerViewModel.month.observe(viewLifecycleOwner, Observer {
             view.fragment_planner_date.text =
-                "${viewModel.year.value}년 ${(viewModel.month.value!!.toInt() + 1)}월"
+                "${plannerViewModel.year.value}년 ${(plannerViewModel.month.value!!.toInt() + 1)}월"
         })
         viewPager.adapter = mViewPagerAdapter
         viewPager.currentItem = 49
         index = 49
-        viewPager.addOnPageChangeListener(onPageChangeListener(viewModel))
+        viewPager.addOnPageChangeListener(onPageChangeListener(plannerViewModel))
         println("fragment1")
         return view
     }

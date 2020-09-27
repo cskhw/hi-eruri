@@ -1,4 +1,4 @@
-package com.wiserock.heruri.model
+package com.wiserock.heruri.model.course
 
 import android.os.Parcelable
 import androidx.room.*
@@ -26,7 +26,7 @@ data class Course(
     @ColumnInfo(name = "course_name")
     var name: String,
     @ColumnInfo(name = "course_done")
-    var done: String,
+    var done: Boolean,
     @ColumnInfo(name = "course_href")
     var href: String,
     @ColumnInfo(name = "course_professor")

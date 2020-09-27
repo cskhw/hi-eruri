@@ -43,7 +43,7 @@ class CourseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.bind(position)
 
         try {
-            if (viewModel.courseList.value?.get(position)?.done == "O") {
+            if (viewModel.courseList.value?.get(position)?.done == true) {
                 view.setBackgroundResource(R.color.white)
                 view.item_course_text1.setTextColor(R.color.black)
                 view.item_course_text2.setTextColor(R.color.black)

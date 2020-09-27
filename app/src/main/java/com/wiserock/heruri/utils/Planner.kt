@@ -2,7 +2,7 @@ package com.wiserock.heruri.utils
 
 import com.wiserock.heruri.model.day.Day
 import com.wiserock.heruri.navigation.planner.PlannerViewModel
-import com.wiserock.heruri.view.adapter.PlannerAdapter
+import com.wiserock.heruri.view.adapter.DayAdapter
 import java.util.*
 
 object Planner {
@@ -31,7 +31,7 @@ object Planner {
         val startDay = getStartDayOfMonth(selectedCalendar) - 1
         println("days = ${days}")
         println("startDay = ${startDay}")
-        PlannerAdapter.itemSize = days + startDay
+        DayAdapter.itemSize = days + startDay
         val temp: ArrayList<Day> = arrayListOf()
         for (i in 0 until startDay) temp.add(
             Day(

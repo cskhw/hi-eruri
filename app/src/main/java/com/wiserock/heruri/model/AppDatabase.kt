@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
+import com.wiserock.heruri.model.course.Course
+import com.wiserock.heruri.model.course.CourseDAO
 import com.wiserock.heruri.model.day.Day
 import com.wiserock.heruri.model.day.DayDAO
 import com.wiserock.heruri.model.push.Push
@@ -22,12 +23,13 @@ import com.wiserock.template.model.user.UserDAO
         Day::class,
         Homework::class,
         Course::class
-    ], version = 3, exportSchema = false
+    ], version = 4, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDAO(): UserDAO
     abstract fun pushDAO(): PushDAO
     abstract fun dayDAO(): DayDAO
+    abstract fun courseDAO(): CourseDAO
 
     companion object {
         const val DB_NAME = "application-db"

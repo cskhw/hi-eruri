@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
-import com.wiserock.heruri.navigation.planner.PlannerFragment
 import com.wiserock.heruri.navigation.course.LectureFragment
 import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.navigation.home.HomeFragment
 import com.wiserock.heruri.navigation.notifications.PushFragment
+import com.wiserock.heruri.navigation.planner.PlannerFragment
 import com.wiserock.heruri.utils.AppPreferenceManager
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.template.model.AppDatabase
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MyApp.mainContext = applicationContext
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
             if (!it.isSuccessful)
                 println("it.exception = ${it.exception}")

@@ -1,7 +1,7 @@
 package com.wiserock.heruri.api
 
 import android.provider.Browser
-import com.wiserock.heruri.model.Course
+import com.wiserock.heruri.model.course.Course
 import java.util.*
 
 class Crawler {

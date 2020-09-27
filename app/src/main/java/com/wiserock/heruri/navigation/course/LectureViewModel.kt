@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wiserock.heruri.MainActivity
-import com.wiserock.heruri.model.Course
+import com.wiserock.heruri.model.course.Course
 import com.wiserock.heruri.model.Homework
 import com.wiserock.heruri.model.Notification
 import com.wiserock.heruri.model.push.Push

@@ -1,9 +1,6 @@
 package com.wiserock.heruri.model.day
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 
 @Dao
 interface DayDAO {
@@ -15,7 +12,11 @@ interface DayDAO {
     @Insert
     fun insert(day: Day)
 
-    @Insert
-    fun insertDayWithPlan(dayWithPlan: DayWithPlan)
+    @Delete
+    fun course(day: Day)
+
+    @Query("delete from day")
+    fun deleteAll()
+
 }
 

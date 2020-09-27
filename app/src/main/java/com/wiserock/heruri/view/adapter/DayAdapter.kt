@@ -6,17 +6,43 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.ItemDayBinding
+import com.wiserock.heruri.model.Homework
+import com.wiserock.heruri.model.course.Course
 import com.wiserock.heruri.navigation.planner.PlannerViewModel
+import com.wiserock.heruri.view.adapter.PlanAdapter.Companion.planAdapterViewModel
 import kotlinx.android.synthetic.main.item_day.view.*
 
-class PlannerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DayAdapter(val viewLifecycleOwner: LifecycleOwner) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         var itemSize = 0
-        lateinit var viewModel: PlannerViewModel
+        lateinit var dayAdapterViewModel: PlannerViewModel
     }
+
+    val tempCourse = Course(
+        id = 19,
+        time = 12314214,
+        name = "임시",
+        deadline = "2022년 언젠가",
+        done = true,
+        href = "https://www.naver.com",
+        professor = "김현우"
+    )
+
+    val tempHomework = Homework(
+        id = 19,
+        time = 12314214,
+        name = "임시",
+        deadline = "2022년 언젠가",
+        done = true,
+        href = "https://www.naver.com",
+        course = "안드로이드"
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemDayBinding =
@@ -34,10 +60,12 @@ class PlannerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = itemSize
+
     inner class PlannerViewHolder(val binding: ItemDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        val recycler: RecyclerView = binding.root.item_plan_recycler
         fun bind(position: Int) {
-            binding.planner = viewModel
+            binding.planner = dayAdapterViewModel
             binding.pos = position
             binding.executePendingBindings()
         }
@@ -50,5 +78,19 @@ class PlannerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (position % 7 == 0) view.item_day_day.setTextColor(Color.parseColor("#FF0000"))
         if (position % 7 == 6) view.item_day_day.setTextColor(Color.parseColor("#0000FF"))
         viewHolder.bind(position)
+        val recycler = viewHolder.recycler
+        val temp = dayAdapterViewModel.dayArrayList.value?.get(position)
+
+        // 플랜 값을 가져온 후 각 데이에 초기화
+        planAdapterViewModel.plan.observe(viewLifecycleOwner, Observer { list ->
+            list.forEach {
+                if (it.day?.time == temp?.day?.time) {
+                    temp?.courseList = it.courseList
+                    temp?.homeworkList = it.homeworkList
+                }
+            }
+            recycler.adapter?.notifyDataSetChanged()
+            recycler.adapter = PlanAdapter(viewLifecycleOwner, position)
+        })
     }
 }

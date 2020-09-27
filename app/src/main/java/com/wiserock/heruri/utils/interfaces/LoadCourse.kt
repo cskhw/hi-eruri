@@ -3,7 +3,7 @@ package com.wiserock.heruri.utils.interfaces
 import android.view.View
 import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.api.Value
-import com.wiserock.heruri.model.Course
+import com.wiserock.heruri.model.course.Course
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.view.adapter.CourseAdapter
 import com.wiserock.heruri.view.adapter.HomeworkAdapter
@@ -72,9 +72,9 @@ interface LoadCourse {
                             for (i in 2..coursesHref.size + 2) {
                                 MyApp.courseArrayList.add(
                                     Course(
-                                        id = id.toLong(),
+                                        id = id,
                                         name = names[i],
-                                        done = checks[i - 2],
+                                        done = checks[i - 2] == "O",
                                         href = coursesHref[i - 2],
                                         professor = professor!!,
                                         deadline = deadlines[i - 2]

@@ -2,8 +2,8 @@ package com.wiserock.heruri.model.day
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
+import com.wiserock.heruri.model.course.Course
 
 data class DayWithPlan(
     @Embedded
