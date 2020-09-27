@@ -35,7 +35,7 @@ object Planner {
         val temp: ArrayList<Day> = arrayListOf()
         for (i in 0 until startDay) temp.add(
             Day(
-                day = " "
+                date = " "
             )
         )
 
@@ -44,7 +44,7 @@ object Planner {
             temp.add(
                 Day(
                     time = time,
-                    day = (i - startDay + 1).toString()
+                    date = (i - startDay + 1).toString()
                 )
             )
             selectedCalendar.add(Calendar.DATE, 1)

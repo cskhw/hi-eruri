@@ -9,11 +9,11 @@ import androidx.room.Query
 interface PushDAO {
 
     @Query("select * from push order By time desc")
-    fun getAll(): List<PushEntity>
+    fun getAll(): List<Push>
 
     @Insert
-    fun insert(pushEntity: PushEntity)
+    fun insert(push: Push)
 
     @Delete()
-    fun delete(pushEntity: PushEntity)
+    fun delete(push: Push)
 }

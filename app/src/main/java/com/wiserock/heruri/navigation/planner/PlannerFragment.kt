@@ -34,6 +34,7 @@ class PlannerFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_planner, container, false)
         val view = binding.root
         val viewPager = view.fragment_planner_viewPager
+        viewPager.offscreenPageLimit = 3
         val viewModel = ViewModelProvider(this).get(PlannerViewModel::class.java)
         val year = selectedCalendar.get(Calendar.YEAR)
         val month = selectedCalendar.get(Calendar.MONTH)

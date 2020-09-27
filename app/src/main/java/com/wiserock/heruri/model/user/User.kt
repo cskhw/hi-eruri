@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
     indices = [Index(value = ["username"], unique = true)]
 )
 @Parcelize
-data class UserEntity(
+data class User(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long,

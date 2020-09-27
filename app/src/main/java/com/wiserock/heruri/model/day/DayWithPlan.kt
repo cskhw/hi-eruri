@@ -2,16 +2,24 @@ package com.wiserock.heruri.model.day
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
 
-class DayWithPlan {
+data class DayWithPlan(
     @Embedded
-    lateinit var day: Day
+    var day: Day? = null,
 
     @Relation(
-        parentColumn = "time",
-        entityColumn = "time",
+        parentColumn = "day_time",
+        entityColumn = "homework_time",
         entity = Homework::class
     )
-    lateinit var homeworkList: List<Homework>
-}
+    var homeworkList: List<Homework> = mutableListOf(),
+
+    @Relation(
+        parentColumn = "day_time",
+        entityColumn = "course_time",
+        entity = Course::class
+    )
+    var courseList: List<Course> = mutableListOf()
+)

@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
     tableName = "push"
 )
 @Parcelize
-data class PushEntity(
+data class Push(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

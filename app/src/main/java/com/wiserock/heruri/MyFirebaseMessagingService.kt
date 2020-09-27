@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.wiserock.heruri.model.push.PushEntity
+import com.wiserock.heruri.model.push.Push
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.TimeStamp
 import com.wiserock.heruri.view.adapter.CourseAdapter
@@ -34,7 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), TimeStamp {
             val messageTitle = remoteMessage.notification!!.title
             println("messageBody = ${messageBody}")
             println("messageTitle = ${messageTitle}")
-            val push = PushEntity(
+            val push = Push(
                 name = messageTitle!!,
                 time = Date().time,
                 description = messageBody!!

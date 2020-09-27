@@ -10,7 +10,7 @@ import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
 import com.wiserock.heruri.model.Notification
-import com.wiserock.heruri.model.push.PushEntity
+import com.wiserock.heruri.model.push.Push
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.utils.interfaces.TimeStamp
 import com.wiserock.heruri.view.adapter.CourseAdapter
@@ -23,7 +23,7 @@ class LectureViewModel : ViewModel(), TimeStamp {
     var homeworkList: MutableLiveData<ArrayList<Homework>> = MutableLiveData()
     var courseList: MutableLiveData<ArrayList<Course>> = MutableLiveData()
     var notificationList: MutableLiveData<ArrayList<Notification>> = MutableLiveData()
-    var pushList: MutableLiveData<ArrayList<PushEntity>> = MutableLiveData()
+    var pushList: MutableLiveData<ArrayList<Push>> = MutableLiveData()
 
     fun setOnClickCourseListener(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

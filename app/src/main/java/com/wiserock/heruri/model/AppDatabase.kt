@@ -4,17 +4,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.wiserock.heruri.model.Course
+import com.wiserock.heruri.model.Homework
+import com.wiserock.heruri.model.day.Day
 import com.wiserock.heruri.model.day.DayDAO
+import com.wiserock.heruri.model.push.Push
 import com.wiserock.heruri.model.push.PushDAO
-import com.wiserock.heruri.model.push.PushEntity
+import com.wiserock.template.model.user.User
 import com.wiserock.template.model.user.UserDAO
-import com.wiserock.template.model.user.UserEntity
 
 @Database(
     entities = [
-        UserEntity::class,
-        PushEntity::class
-    ], version = 2
+        User::class,
+        Push::class,
+        Day::class,
+        Homework::class,
+        Course::class
+    ], version = 3, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDAO(): UserDAO
@@ -42,6 +50,17 @@ abstract class AppDatabase : RoomDatabase() {
                     // write callback function
                 })
                 .build()
+        }
+    }
+
+    val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE `Fruit` (`id` INTEGER, `name` TEXT, " + "PRIMARY KEY(`id`))")
+        }
+    }
+    val MIGRATION_2_3 = object : Migration(2, 3) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE Book ADD COLUMN pub_year INTEGER")
         }
     }
 }

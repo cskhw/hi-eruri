@@ -20,6 +20,5 @@ class PlannerViewModel : ViewModel() {
             .create()
         val appDatabase: AppDatabase = AppDatabase.getInstance(context)
         val dayDAO = appDatabase.dayDAO()
-        val plans = dayDAO.getAllPlan()
     }
 }

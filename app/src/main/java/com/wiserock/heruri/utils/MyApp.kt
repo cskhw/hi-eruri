@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.wiserock.heruri.model.Course
 import com.wiserock.heruri.model.Homework
 import com.wiserock.heruri.model.Notification
-import com.wiserock.heruri.model.push.PushEntity
+import com.wiserock.heruri.model.push.Push
 import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.view.adapter.CourseAdapter
 import com.wiserock.heruri.view.adapter.HomeworkAdapter
@@ -25,7 +25,7 @@ object MyApp : Application() {
     var homeworkArrayList: ArrayList<Homework> = arrayListOf()
     var courseArrayList: ArrayList<Course> = arrayListOf()
     var notificationArrayList: ArrayList<Notification> = arrayListOf()
-    var pushArrayList: ArrayList<PushEntity> = arrayListOf()
+    var pushArrayList: ArrayList<Push> = arrayListOf()
     fun init(viewModel: LectureViewModel) {
         HomeworkAdapter.viewModel = viewModel
         CourseAdapter.viewModel = viewModel
