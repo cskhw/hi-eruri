@@ -24,6 +24,7 @@
             android:backgroundTint="@color/purple"
             android:layout_height="wrap_content"
             android:textSize="12sp"
+            android:text="@{plan.setTitle(pos)}"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

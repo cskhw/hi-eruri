@@ -51,7 +51,11 @@ object Planner {
         }
         selectedCalendar.add(Calendar.MONTH, -1)
         println("1")
-        viewModel.dayArrayList.value = temp
+        viewModel.dayArrayList.value?.forEach { dayWithPlan ->
+            temp.forEach {
+                dayWithPlan.day = it
+            }
+        }
         println("viewModel.dayArrayList.value = ${viewModel.dayArrayList.value}")
     }
 }

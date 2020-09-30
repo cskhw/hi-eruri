@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@{planner.dayArrayList[pos].date}"
+            android:text="@{planner.dayArrayList[pos].day.date}"
             android:onClick="@{() -> planner.onClickDayButton(context, planner.dayArrayList[pos])}"
             android:layout_marginBottom="5dp"
             android:textColor="@color/black"

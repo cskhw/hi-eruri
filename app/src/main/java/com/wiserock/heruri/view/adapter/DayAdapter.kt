@@ -87,10 +87,30 @@ class DayAdapter(val viewLifecycleOwner: LifecycleOwner) :
                 if (it.day?.time == temp?.day?.time) {
                     temp?.courseList = it.courseList
                     temp?.homeworkList = it.homeworkList
+                    println("it.day?.time값이 등록되었습니다. = ${it.day?.time}")
+                    println(
+                        "dayAdapterViewModel.dayArrayList.value?.get(position) = ${dayAdapterViewModel.dayArrayList.value?.get(
+                            position
+                        )?.courseList}"
+                    )
+
+                    dayAdapterViewModel.planArrayList.value?.get(position)
+                        ?.addAll(temp?.courseList as Iterable<Any>)
+                    if (temp != null) {
+                        dayAdapterViewModel.planArrayList.value?.get(position)
+                            ?.addAll(temp.homeworkList as ArrayList<*>)
+                    }
+                    println(
+                        "dayAdapterViewModel.planArrayList[position] = ${dayAdapterViewModel.planArrayList.value?.get(
+                            position
+                        )}"
+                    )
                 }
             }
-            recycler.adapter?.notifyDataSetChanged()
-            recycler.adapter = PlanAdapter(viewLifecycleOwner, position)
+            dayAdapterViewModel.position.observe(viewLifecycleOwner, Observer {
+                recycler.adapter?.notifyDataSetChanged()
+                recycler.adapter = PlanAdapter()
+            })
         })
     }
 }
