@@ -8,6 +8,7 @@ import com.wiserock.template.model.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlannerRepo {
     val context = mainContext
@@ -17,8 +18,11 @@ class PlannerRepo {
         val dao = database.dayDAO()
         CoroutineScope(Dispatchers.IO).launch {
             println("init dayWithPlan")
-            plannerViewModel.plan.value = dao.getAllPlan()
-            println("plannerViewModel.plan.value = ${plannerViewModel.plan.value}")
+            val temp = dao.getAllPlan()
+            withContext(Dispatchers.Main) {
+                plannerViewModel.plan.value = temp
+                println("plannerViewModel.plan.value = ${plannerViewModel.plan.value}")
+            }
         }
     }
 }

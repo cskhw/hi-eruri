@@ -24,26 +24,6 @@ class DayAdapter(val viewLifecycleOwner: LifecycleOwner) :
         lateinit var dayAdapterViewModel: PlannerViewModel
     }
 
-    val tempCourse = Course(
-        id = 19,
-        time = 12314214,
-        name = "임시",
-        deadline = "2022년 언젠가",
-        done = true,
-        href = "https://www.naver.com",
-        professor = "김현우"
-    )
-
-    val tempHomework = Homework(
-        id = 19,
-        time = 12314214,
-        name = "임시",
-        deadline = "2022년 언젠가",
-        done = true,
-        href = "https://www.naver.com",
-        course = "안드로이드"
-    )
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding: ItemDayBinding =
             DataBindingUtil.inflate(

@@ -41,21 +41,13 @@ object Planner {
 
         for (i in startDay..days + startDay) {
             val time = selectedCalendar.time.time
-            temp.add(
-                Day(
-                    time = time,
-                    date = (i - startDay + 1).toString()
-                )
-            )
+            viewModel.dayArrayList.value?.get(i)?.day = (Day(
+                time = time, date = (i - startDay + 1).toString()
+            ))
             selectedCalendar.add(Calendar.DATE, 1)
         }
         selectedCalendar.add(Calendar.MONTH, -1)
-        println("1")
-        viewModel.dayArrayList.value?.forEach { dayWithPlan ->
-            temp.forEach {
-                dayWithPlan.day = it
-            }
-        }
+        println("!@#$%")
         println("viewModel.dayArrayList.value = ${viewModel.dayArrayList.value}")
     }
 }
