@@ -42,7 +42,6 @@ interface LoadHomework : OnClickListener {
                         try {
                             homeworkIds.add(numberRegex.find("temp")?.value?.toInt()!!)
                         } catch (e: Exception) {
-                            println("과제가 없다람쥐")
                         }
                     }
                 }
@@ -84,7 +83,6 @@ interface LoadHomework : OnClickListener {
                 }
             }
             withContext(Dispatchers.Main) {
-                HomeworkAdapter.viewModel.homeworkList.value = MyApp.homeworkArrayList
                 MyApp.loading.value = true
             }
             println("loadHomework finished")

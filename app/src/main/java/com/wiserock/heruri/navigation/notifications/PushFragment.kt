@@ -28,7 +28,6 @@ class PushFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        println("안녕 친구들 나는 빡빡이 아죠씨야!! (*^*)")
         notificationsViewModel =
             ViewModelProvider(this).get(PushViewModel::class.java)
         val binding: FragmentPushBinding =

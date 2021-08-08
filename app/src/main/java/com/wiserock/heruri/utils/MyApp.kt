@@ -1,8 +1,10 @@
 package com.wiserock.heruri.utils
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.wiserock.heruri.model.Homework
 import com.wiserock.heruri.model.Notification
 import com.wiserock.heruri.model.course.Course
@@ -22,18 +24,19 @@ object MyApp : Application() {
     lateinit var index: Connection.Response
     lateinit var cookies: Map<String, String>
     var loading: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    @SuppressLint("StaticFieldLeak")
     var homeworkIds: ArrayList<Int> = arrayListOf()
     var homeworkArrayList: ArrayList<Homework> = arrayListOf()
     var courseArrayList: ArrayList<Course> = arrayListOf()
+
+    @SuppressLint("StaticFieldLeak")
     var notificationArrayList: ArrayList<Notification> = arrayListOf()
     var pushArrayList: ArrayList<Push> = arrayListOf()
     lateinit var mainContext: Context
 
+    @SuppressLint("StaticFieldLeak")
     fun init(viewModel: LectureViewModel) {
-        HomeworkAdapter.viewModel = viewModel
-        CourseAdapter.viewModel = viewModel
-        NotificationAdapter.viewModel = viewModel
-        PushAdapter.viewModel = viewModel
         homeworkArrayList = arrayListOf()
         courseArrayList = arrayListOf()
         notificationArrayList = arrayListOf()

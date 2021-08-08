@@ -82,7 +82,6 @@ interface LoadCourse {
                                 )
                             }
                         } catch (e: Exception) {
-                            println("안녕하신가제트")
                         }
                     } catch (e: Exception) {
                         println("course의 id가 없음 ")
@@ -92,7 +91,6 @@ interface LoadCourse {
                 withContext(Dispatchers.Main) {
                     CourseAdapter.itemSize = MyApp.courseArrayList.size
                     MyApp.courseArrayList.reverse()
-                    HomeworkAdapter.viewModel.courseList.value = MyApp.courseArrayList
                     MainActivity.dialog.visibility = View.GONE
                     println("loadCourse finished")
                 }

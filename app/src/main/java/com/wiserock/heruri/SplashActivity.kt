@@ -37,19 +37,9 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse,
 
         val preference = AppPreferenceManager
         println("made by wiseRock")
-        val username = preference.getString(applicationContext, "username")
         val password = preference.getString(applicationContext, "password")
         val loginUrl = Value.BASE_URL + "login/index.php"
         val formData: HashMap<String, String> = hashMapOf()
-
-        try {
-            formData["username"] = username!!
-            formData["password"] = password!!
-        } catch (e: Exception) {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-
-
 
         GlobalScope.launch(Dispatchers.IO) {
             MyApp.index = Jsoup.connect(loginUrl)
@@ -76,7 +66,6 @@ class SplashActivity : AppCompatActivity(), LoadHomework, LoadCourse,
                     loadCourse()
                     loadHomework(this@SplashActivity)
                     loadNotification()
-                    println("코드를 보러 오셨군요.")
                 }
             }
         }

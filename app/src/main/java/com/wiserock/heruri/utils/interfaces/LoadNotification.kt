@@ -35,7 +35,6 @@ interface LoadNotification {
             }
             NotificationAdapter.itemSize = MyApp.notificationArrayList.size
             withContext(Dispatchers.Main) {
-                HomeworkAdapter.viewModel.notificationList.value = MyApp.notificationArrayList
             }
             println("made by wiseRock")
         }

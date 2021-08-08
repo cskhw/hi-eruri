@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import com.wiserock.heruri.MainActivity
 import com.wiserock.heruri.R
 import com.wiserock.heruri.databinding.FragmentNotificationBinding
+import com.wiserock.heruri.navigation.course.LectureViewModel
 import com.wiserock.heruri.utils.MyApp
 import com.wiserock.heruri.view.adapter.HomeworkAdapter
 import com.wiserock.heruri.view.adapter.NotificationAdapter
@@ -31,7 +32,10 @@ class HomeFragment : Fragment() {
         val binding: FragmentNotificationBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false)
         val view = binding.root
-        val homeworkViewModel = HomeworkAdapter.viewModel
+        val homeworkViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(LectureViewModel::class.java)
         val recyclerView = view.fragment_home_recycler
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter?.notifyDataSetChanged()

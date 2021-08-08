@@ -11,10 +11,10 @@ import com.wiserock.heruri.navigation.course.LectureViewModel
 import kotlinx.android.synthetic.main.item_homework.view.*
 
 
-class HomeworkAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeworkAdapter(val viewModel: LectureViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         var itemSize = 0
-        lateinit var viewModel: LectureViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
